@@ -1,0 +1,4 @@
+enum OrdersSortOptions{
+  total,
+  date,
+}

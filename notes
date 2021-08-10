@@ -1,0 +1,274 @@
+Tasks for admin panel
+
+1) add search bar in customers screen use greater than or equal to .... (done)
+2) activate sorting and filter in products screen .... (done)
+3) calculate these analytics in dashboard screen .... (done)
+4) add analytics widget in dashboard screen  .... (done)
+5) add onPressed to customer widget in customers screen .... (done)
+6) add address widget to customer profile screen .... (done)
+7) build settings screen
+8) add App bar to all screens .... (done)
+9) add search bar in products screen .... (done)
+10) control streaming for orders
+11) add section and category to product model .... (done)
+12) save state for screens
+13) add translation
+14) add the date of joining
+
+
+// requirements
+العميل طلب كام مرة من كل منتج
+سياسة الاسترجاع
+اكونت الادمن
+البانرات
+
+
+
+// Todos
+1- add notifier after adding product (done)
+2 - make sorting follow filtering in products screen (done)
+3 - adding empty section in add category screen (done)
+4 - create category then add section inside it (done)
+5 - we should delete add category screen (done)
+6 - make sorting inside products screen follow filtering (done)
+7- search for order by number
+8- add localization  (done)
+9 - hide image after uploading product (done)
+10 - resolve this 'you start from the end of the query when notify products screen after uploading product' (done)
+11 - resolve route package (done)
+12 - solve submit empty category
+13- add x sign on image to cancel it after choosing (done)
+14 - when category list is empty add message in category screen (done)
+15 - add create section when choosing section for adding product
+16 - scroll controller
+17 - fix notifier for products as sections
+18 - change products field to looks like category and section
+19 - fix notifier for categories as sections
+
+
+
+********************************
+notes about admin account settings
+1 - admin can change password , name , phone number
+
+
+notes about customer account
+customer can lose his phone number
+
+
+// owner who can add and block admins
+
+
+// Top selling products
+// Deals
+
+
+
+
+sorting conditions
+
+1 - price => orderBy('current_price')
+2- date => orderBy('date')
+3- top_selling_products => orderBy('number_of_sales')
+
+
+filtering conditions
+
+1- category => where('category_id', == , 'id') => whole category  where('category_id', == , 'id')|| section => where('section_id', == , 'id')
+
+2- is deal of the day => where('is_deal_of_the_day' , == , true)
+
+3- unCategorized => where('section_id', == , null)
+
+
+categories
+un categorized
+deal of the day
+
+
+
+// get products from cubit
+
+FilterOptions{
+ unCategorized, deal_of_the_day , top_products
+}
+
+
+getCategoryOrSectionProducts(String categoryId , String sectionId){
+
+   if(sectionId !=null){
+       getAllProducts(filterConditionName : 'section_id' , filterConditionValue: sectionId)
+
+       } else if(categoryId !=null){
+               getAllProducts(filterConditionName : 'category_id' , filterConditionValue: categoryId)
+
+               }
+}
+
+filterByOtherOptions(FilterOptions filter){
+
+if(filter == FilterOptions.unCategorized)
+
+else if(filter == FilterOptions.deal_of_the_day)
+
+
+}
+
+
+
+getAllProducts( Map section , Map category ,bool isUnCategorized = false , sort){
+
+            if(section !=null){
+            getAllProducts(filterConditionName: 'section_id',val:section)
+            }else if(category!=null){
+            getAllProducts(filterConditionName: 'section_id',val:category)
+            }else if(isUnCategorized){
+                 getAllProducts(filterConditionName: 'section_id',val:null)
+            }
+                if(sort !=null){
+               String sortCondition = getSortCondition(sort);
+               getAllProducts(sortCondition:sortCondition);
+               }
+}
+
+getSortedProducts(String sortCondition , Map){
+
+}
+
+
+_getSortCondition(Sort){
+ switch(sort){
+
+               case price:
+               sortCondition = 'current_price';
+
+               case date:
+               sortCondition = 'date';
+
+               case top_selling_products:
+               sortCondition = 'number_of_sales';
+               }
+}
+}
+
+  Future<List<DocumentSnapshot>> getAllProducts(
+      {DocumentSnapshot? documentSnapshot,
+      String? sortCondition,
+      String? filterConditionName,
+      String? filterConditionValue,
+      bool descending = false}) async {
+    List<DocumentSnapshot> documentList;
+    Query query;
+
+    // 1- filter condition
+    if (filterConditionName != null &&
+        filterConditionValue != null &&
+        sortCondition == null) {
+      query = firestore
+          .collection('products')
+          .limit(20)
+          .where(filterConditionName, isEqualTo: filterConditionValue);
+    }
+    // 2- sort condition
+    else if (sortCondition != null) {
+      /// if filter condition not null
+      if (filterConditionName != null && filterConditionValue != null) {
+        query = firestore
+            .collection('products')
+            .limit(20)
+            .where(filterConditionName, isEqualTo: filterConditionValue)
+            .orderBy('$sortCondition', descending: descending);
+      }
+
+      /// if there is no filter condition
+      else {
+        query = firestore
+            .collection('products')
+            .limit(20)
+            .orderBy('$sortCondition', descending: descending);
+      }
+    }
+    // 3- if no filter or sorting condition
+    else {
+      query = firestore.collection('products').limit(20);
+    }
+
+    if (documentSnapshot != null) {
+      documentList =
+          (await query.startAfterDocument(documentSnapshot).get()).docs;
+    } else {
+      documentList = (await query.get()).docs;
+    }
+
+    return documentList;
+  }
+
+
+///// notes 5/8
+
+1 - Capitalize first letter in all names banner (done)
+
+2 - add all product data to algolia (done)
+
+3 - show confirmation message to update product photo or category or banner (done)
+
+4 - Activate reset button in filter screen (done)
+
+5 - activate quick contact icon in customer analytics screen
+
+6 - add chart in statistics screen
+
+7 - Add arabic name field to main category screen (done)
+
+8 - Add sub category screen (done)
+
+9 - resize products list to cover all screen. (done)
+
+10 - in add product screen modify field add section to add category . (done)
+
+11- make click on choose category , customer widget , cover all item (done)
+
+12 - change shape of filter and sorting screen.
+
+13 - add splash screen
+
+14 when searching stream if no resault add we could not find "text search" . and when tapping ok show we could not find any thing for text search
+
+15 - Add banners inside product screen .
+
+16 - Add no discription if discription is null (done)
+
+17 - when editing basic quantity add new quantity to the current .
+
+18 - modify add product screen add section to add category , photo after chosing .(done)
+19 - make filter and sort screen scrollable. (done)
+20 - add no orders widget for customer orders , no analytics widget for customer analytics ,
+21 - make customer screen scrollable . (done)
+22- fix main category update name (done)
+23 - fix analytics screen for cusomers .
+24 - add edit option to order screen .
+25 - show order number for order item if null add " no order number yet " (done)
+26 - add circular progress when updating benner , category name .
+Fix text field modal bottom sheet name and direction (done)
+27 - change size of description field in product screen  (done)
+
+28 - fix choose category in filter and sorting for products screen , make it scrollable . (done)
+29 - fix size of photo in banner , produts , categories (done)
+30 - in add banner , sub category , make screen scrollable and images removable (done)
+31- translate order item and order screen
+32 - when adding sub category fix empty names . (done)
+33- when new customer joined add notification
+34 - when new order added add new notification to order screen.
+35 - make stack for navigation icons
+
+
+
+ البرودكشن
+
+ السلام عليكم ازي حضراتكم جميعا يا رب تكونو بخير لو سمحت عاوز اسأل ازاي استلم شغلانة من عميل زي مثلا الاتفاق علي المواعيد وعلي الفلوس وازاي هقدر اخد منه الفلوس وهل هسلمه السورس كود ولا لا
+
+
+
+
+
+

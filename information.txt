@@ -1,0 +1,23 @@
+--> Product Info
+title
+description
+price
+actual price
+original quantity
+remain quantity
+sold quantity
+category
+orders history
+image
+
+
+
+
+dashboard in consider
+1 - Revenue This Month
+
+
+notifications in consider :
+
+1- new user registeration
+2 -
