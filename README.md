@@ -1,4 +1,4 @@
-# ecommerce_admin_tut
+# baqal admin panel
 
 A new Flutter application.
 
